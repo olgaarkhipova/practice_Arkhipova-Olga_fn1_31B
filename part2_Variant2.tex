@@ -1,0 +1,269 @@
+% ---------------------------- Problem 1----------------------------------
+\subsubsection*{\center Задача № 1.}
+{\bf Условие.~}
+Разложить в ряд Фурье заданную функцию $f(x)$, построить графики $f(x)$ и суммы ее ряда Фурье. Если не указывается, какой вид разложения в ряд необходимо представить, то требуетчя разложить функцию либо в общий тригонометрический ряд Фурье, либо следует выбрать оптимальный вид разложения в зависимости от данной функции. \\[1cm]
+
+$
+f(x)=\left\{
+	\begin{array}{r}
+	x, \quad0 \leq x \leq \dfrac{\pi}{2}, \\
+	\dfrac{\pi}{2}, \quad\dfrac{\pi}{2}<x \leq \pi,
+	\end{array}
+	\right.
+$
+на отрезке $[0;\,\pi]$ по синусам кратных дуг.\\    [1cm]
+{\bf Решение.~}	
+%График
+\begin{center}
+	\begin{tikzpicture}[
+		declare function={
+			func(\x)=
+			and(\x >= 0, \x <= 1.5708) * (\x) + 
+			and(\x >  1.5708, \x <= 3) * 1.5708; 
+		}
+		]
+		\begin{axis}[
+		axis x line=middle, axis y line=middle,
+		axis equal,	
+		ymin=-1.1, ymax=1.1, ytick={-1,1,1.5708}, ylabel=$y$,
+		xmin=-1.1, xmax=5, xtick={-1,1,1.5708,2,3.14159},
+		xticklabels={-1,1,$\dfrac{\pi}{2}$,2,$\pi$},
+		yticklabels={-1,1,$\dfrac{\pi}{2}$,$\pi$},
+		xlabel=$x$,
+		domain=0.0:pi,samples=600 % added		
+		]
+        \addplot [domain=0:1.5708,black,line width=2pt] {\x};
+		\addplot [domain=1.5708:pi,black,line width=2pt] {1.5708};
+		\addplot [dashed, black] coordinates {(1.5708,0)(1.5708,1.5708)};
+		\end{axis}
+		\end{tikzpicture}
+	\end{center}
+\noindent
+Доопределим функцию так, чтобы она была нечётной на отрезке $[-\pi;\,\pi]$.\\ [12pt]
+То есть 
+$
+f(x)=\left\{
+	\begin{array}{r}
+	-x, \quad-\dfrac{\pi}{2} \leq x \leq  0, \\
+	-\dfrac{\pi}{2}, \quad\ -\pi \leq x< -\dfrac{\pi}{2}.
+	\end{array}
+	\right.
+$ \\ [12pt]
+Тригонометрический ряд Фурье для нечётной функции имеет вид
+$$
+f(x)=\sum_{n=1}^\infty 
+\left(b_n\sin{(n\omega x)}\right),\quad\text{где}\,\omega=\frac{2\pi}{T},\,T=2\pi.
+$$
+\noindent
+Вычислим коэффициент $b_n$
+$$
+\begin{array}{rcl}
+b_n &=& \displaystyle\frac{2}{\pi}\left(
+	\int\limits_0^\frac{\pi}{2}
+	x\sin \left(nx\right)\,dx + \frac{\pi}{2}\int\limits_\frac{\pi}{2}^\pi
+	\sin \left(nx\right)\,dx \right) ={}									\\[12pt]
+	&=& \displaystyle\frac{2}{\pi}\left(
+	-\left.\frac{x}{n}\cos\left(nx\right)\right|_0^\frac{\pi}{2}
+	+\left.\frac{1}{n^2}\sin\left(nx\right)\right|_0^\frac{\pi}{2} 
+	-\left.\frac{\pi}{2n}\cos\left(nx\right)\right|_\frac{\pi}{2}^\pi\right) =
+	\\[12pt]
+	&=& \displaystyle\frac{2}{\pi}\left(
+	-\frac{\pi}{2n}\cos\frac{n \pi}{2}
+	+\frac{1}{n^2}\sin\frac{n \pi}{2}\
+	-\frac{\pi}{2n}\cos\left(n \pi\right)
+	+\frac{\pi}{2n}\cos\frac{n \pi}{2}\right) =
+	\\[12pt]
+	&=& \displaystyle\frac{2}{\pi}\left(\frac{1}{n^2}\sin\frac{n \pi}{2}-\frac{\pi}{2n}\cos\left(n \pi\right)\right)
+\end{array}
+ $$
+Применив теорему Дирихле о поточечной сходимости ряда Фурье, видим, что построенный ряд Фурье сходится к периодическому (с периодом $T=2 \pi$) продолжению исходной функции при всех $x\ne \pi(2n+1)$, и 
+$S(\pi(2n+1))=0$ при $n=0,\pm1,\pm2,\ldots$, где $S(x)$ --- сумма ряда Фурье. 
+График функции $S(x)$ имеет следующий вид
+\begin{center}
+	\begin{tikzpicture}
+	\begin{axis}[xmin=-9.4, xmax=10, ymin=-2, ymax=2,
+	width=0.8\textwidth,
+	height=0.4\textwidth,
+	axis x line=middle,
+	axis y line=middle,
+	every axis x label/.style={at={(current axis.right of origin)},anchor=west},
+	every inner x axis line/.append style={|-latex'},
+	every inner y axis line/.append style={|-latex'},
+	minor x tick num=1,			
+	axis equal=true,
+	ytick={-1.5708,1.5708},
+    xtick={-9.4,-7.8,-6.2,-4.7,-3.1,-1.57,1.57,3.1,4.7,6.2,7.8,9.4},
+	yticklabels={$-\dfrac{\pi}{2}$,$\dfrac{\pi}{2}$},
+    xticklabels={$-3 \pi$,$-\dfrac{5 \pi}{2}$,$-2 \pi$,$-\dfrac{3 \pi}{2}$,$-\pi$,$-\dfrac{\pi}{2}$,$\dfrac{\pi}{2}$,$\pi$,$\dfrac{3 \pi}{2}$,$2 \pi$,$\dfrac{5 \pi}{2}$,$3 \pi$},
+    xlabel={$x$}, 
+	ylabel={$S(x)$},          
+	samples=100,
+	clip=true,
+	]
+	\addplot[color=black, line width=1.5pt,domain=-9.4:-7.8] {-1.57};
+	\addplot[color=black, line width=1.5pt,domain=-7.8:-4.7]{\x+6.2};
+	\addplot[color=black, line width=1.5pt,domain=-4.7:-pi] {1.57};
+	\addplot[color=black, line width=1.5pt,domain=-pi:-1.57] {-1.57};
+	\addplot[color=black, line width=1.5pt,domain=-1.57:1.57] {\x};
+	\addplot[color=black, line width=1.5pt,domain=1.57:pi]{1.57};
+	\addplot[color=black, line width=1.5pt,domain=pi:4.7] {-1.57};
+	\addplot[color=black, line width=1.5pt,domain=4.7:7.8]{\x-6.2};
+	\addplot[color=black, line width=1.5pt,domain=7.8:9.4]{1.57};
+	\addplot[thick,dashed] coordinates {(1.57,0) (1.57,1.57)};
+	\addplot[thick,dashed] coordinates {(-1.57,0) (-1.57,-1.57)};
+	\addplot[thick,dashed] coordinates {(-7.8,0) (-7.8,-1.57)};
+	\addplot[thick,dashed] coordinates {(-4.7,0) (-4.7,1.57)};
+	\addplot[thick,dashed] coordinates {(4.7,0) (4.7,-1.57)};
+	\addplot[thick,dashed] coordinates {(7.8,0) (7.8,1.57)};
+	\addplot[
+	mark=*,
+	mark options={fill=black, draw=black},
+	only marks,
+	] coordinates {(-pi,0) (pi,0) (-9.4,0) (9.4,0) };
+	\end{axis}
+	\end{tikzpicture}
+ \end{center}
+\noindent
+\textbf{Ответ:}
+\begin{align*}
+&f(x)=\sum_{n=1}^\infty\left(\frac{2}{\pi n^2}\sin\frac{n \pi}{2} 
+-\frac{1}{n}\cos\left(n \pi\right)\right)\sin\left(nx\right),x\ne \pi(2n+1)&;\\
+&S(\pi(2n+1))=0, \text{ при } n\in\mathbb{Z}.
+\end{align*}
+
+
+
+% ---------------------------- Problem 2----------------------------------
+\subsubsection*{\center Задача № 2}
+{\bf Условие.~}
+Для заданной графически функции $y(x)$ построить ряд Фурье в комплексной форме, изобразить график суммы построенного ряда
+
+%График
+\begin{center}
+		\begin{tikzpicture}[
+	declare function={
+		func(\x)= 
+		and(\x >= 0, \x <= 1) * (1-\x)     	+
+		and(\x >  1, \x <= 2) * (1.0);
+	}
+	]
+	\begin{axis}[
+	axis x line=middle, axis y line=middle,
+	axis equal,	
+	ymin=-1.1, ymax=1.1, ytick={-1,...,1}, ylabel=$y$,
+	xmin=-1.1, xmax=3, xtick={-1,0,1,2}, xlabel=$x$,
+	domain=-0.0:2.5,samples=600, % added
+	]
+	
+	\addplot [domain=0:1,black,line width=2pt] {1-\x};
+	\addplot [domain=1:2,black,line width=2pt] {1.0};
+	\addplot [dashed, black] coordinates {(1,0)(1,1)};
+	\addplot [dashed, black] coordinates {(2,0)(2,1)};
+	\end{axis}
+	\end{tikzpicture}
+\end{center}
+
+\noindent
+\textbf{Решение.}\\
+
+\noindent
+Ряд Фурье в комплексной форме имеет следующий вид
+\[
+f(x) = \sum_{n=-\infty}^\infty c_n e^{i\omega nx},\quad c_n=\frac{1}{T}\int\limits_a^b f(x) e^{-i\omega nx}dx,\,\omega=\frac{2\pi}{T}.
+\]
+В данной задаче $ a=0,b=2,T=2,\omega=\pi$, 
+найдем коэффицинеты $c_n,\,n=0,\pm1,\pm2,\ldots$
+где $\omega=2\pi/T,\,T=2.$
+$$
+\begin{array}{rcl}
+c_0 &=&\displaystyle\frac{1}{2} \int\limits_0^2 f(x)dx=\frac{1}{2}\left(\int\limits_0^1\left(1-x\right)dx+\int\limits_1^2dx\right)=\frac{3}{2}\\[12pt]
+c_n &=&\displaystyle\frac{1}{2}\left(
+\int\limits_0^1\left(1-x\right)
+e^{-i\omega nx}dx+ \int\limits_1^2
+e^{-i\omega nx}dx \right) ={}\\[12pt]
+&=&\displaystyle\frac{1}{2}\left(
+\left.\frac{i}{\pi  n}\left(1-x\right)e^{-i\omega nx} \right|_0^1
+-\left.\frac{e^{-i\omega nx}}{\pi^2 n^2}\right|_0^1
++\left.\frac{i}{\pi n}e^{-i\omega nx}\right|_1^2\right) = \\[12pt]
+&=&\displaystyle-\frac{i}{2\pi n}\left(1-e^{-2i\pi n}+e^{-i\pi n}\right)+\frac{1}{2\pi^2 n^2}\left(1-e^{-i\pi n}\right) = \\[12pt]
+&=&\displaystyle\frac{1}{2\pi^2 n^2}-\left(\frac{i}{2 \pi n}+\frac{1}{2\pi^2 n^2}\right)\cos\left(\pi n\right)
+\end{array}
+$$
+\noindent
+\\[12pt]
+Применив теорему Дирихле о поточечной сходимости ряда Фурье, видим, что построенный ряд Фурье сходится 
+к периодическому (с периодом $T=2$) продолжению исходной функции при всех $x\ne 2n+1$, и $S(2n+1)=1/2$ при 
+$n=0,\pm1,\pm2,\ldots$, где $S(x)$ --- сумма ряда Фурье. График функции $S(x)$ имеет вид
+\begin{center}
+	\begin{tikzpicture}
+	\begin{axis}[xmin=-4, xmax=6, ymin=-1, ymax=0.5,
+	width=0.8\textwidth,
+	height=0.4\textwidth,
+	axis x line=middle,
+	axis y line=middle, 
+	every axis x label/.style={at={(current axis.right of origin)},anchor=west},
+	every inner x axis line/.append style={|-latex'},
+	every inner y axis line/.append style={|-latex'},
+	minor tick num=1,			
+	axis equal=true,
+	xlabel=$x$, 
+	ylabel=$S(x)$,          
+	samples=100,
+	clip=true,
+	]
+	\addplot[color=black, line width=1.5pt,domain=-4:-3] {-\x-3};
+	\addplot[color=black, line width=1.5pt,domain=-3:-2]{1};
+	\addplot[color=black, line width=1.5pt,domain=-2:-1] {-\x-1};
+	\addplot[color=black, line width=1.5pt,domain=-1:0]{1};
+	\addplot[color=black, line width=1.5pt,domain=0:1] {-\x+1};
+	\addplot[color=black, line width=1.5pt,domain=1:2]{1};
+	\addplot[color=black, line width=1.5pt,domain=2:3] {-\x+3};
+	\addplot[color=black, line width=1.5pt,domain=3:4] {1};
+	\addplot[color=black, line width=1.5pt,domain=4:5]{-\x+5};
+	\addplot[color=black, line width=1.5pt,domain=5:6]{1};
+	\addplot[
+	mark=*,
+	mark options={fill=black, draw=black},
+	only marks,
+	] coordinates {(-3, 0.5) (-1, 0.5) (1, 0.5) (3, 0.5) (5,0.5)};
+	\end{axis}
+	\end{tikzpicture}
+\end{center}
+
+\noindent
+\textbf{Ответ:}
+\[
+\begin{split}
+&f(x)=\sum_{n=-\infty}^\infty\left[ \frac{1}{2\pi^2 n^2}-\left(\frac{i}{2 \pi n}+\frac{1}{2\pi^2 n^2}\right)\cos\left(\pi n\right)\right] e^{i\pi nx},~ x\ne 2n+1; \\
+&S(2n+1)=\frac{1}{2},\quad\text{при}~n\in\mathbb{Z}.
+\end{split}
+\]
+
+
+% ---------------------------- Problem 3----------------------------------
+\subsubsection*{\center Задача № 3.}
+{\bf Условие.~}\\
+Найти резольвенту для интегрального уравнения Вольтерры со следующим ядром 
+$$K(x,t)=(t-x)e^{\left(shx-sht\right)},\lambda=e^2.$$
+
+\noindent
+{\bf Решение.~}\\
+\noindent
+Из рекурентных соотношений 
+$$K_j(x,t)=\displaystyle\int\limits_t^x K(x,s)K_{j-1}(s,t)ds$$ получаем
+$$
+\begin{array}{rcl}
+K_1(x,t)&=&\displaystyle (t-x)e^{\left(shx-sht\right)}, \\[12pt]
+K_2(x,t)&=&\displaystyle\int\limits_t^x K(x,s)K_1(s,t)ds = \int\limits_t^x (s-x)e^{\left(shx-shs\right)}(t-s)e^{\left(shs-sht\right)} ds = \\[12pt]
+&=&\displaystyle\ e^{\left(shx-sht\right)}\cdot\frac{x^3-3x^2t+3xt^2-t^3}{6}=e^{\left(shx-sht\right)}\cdot\frac{(x-t)^3}{6},
+\\[12pt]
+K_3(x,t)&=&\displaystyle\int\limits_t^x K(x,s)K_2(s,t)ds = \int\limits_t^x (s-x)e^{\left(shx-shs\right)}\cdot\ e^{\left(shs-sht\right)}\frac{(s-t)^3}{6}ds =  \\[12pt]
+&=&\displaystyle\ e^{\left(shx-sht\right)}\cdot\frac{(t-x)^5}{120} . \\[12pt]
+K_j(x,t)&=&\displaystyle\left(-1\right)^{j+1}\cdot\ e^{\left(shx-sht\right)}\cdot\frac{(t-x)^{2j-1}}{(2j-1)!},\quad j=\mathbb{N}.
+\end{array}
+$$
+Подставляя это выражение для итерированных ядер, найдем резольвенту
+$$ 
+R(x,t,\lambda)=\sum_{j=1}^\infty \lambda^{j-1}K_j(x,t)=\sum_{j=1}^\infty\ e^{2j-2}\cdot\left(-1\right)^{j+1}\cdot\ e^{\left(shx-sht\right)}\cdot\frac{(t-x)^{2j-1}}{(2j-1)!},
+\quad j=1,2,\ldots
+$$
